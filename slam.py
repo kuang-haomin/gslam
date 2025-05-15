@@ -1,4 +1,5 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 import sys
 import time
 from argparse import ArgumentParser
@@ -201,7 +202,7 @@ class SLAM:
 if __name__ == "__main__":
     # Set up command line argument parser
     parser = ArgumentParser(description="Training script parameters")
-    parser.add_argument("--config", type=str)
+    parser.add_argument("--config", type=str,default="configs/mono/tum/fr3_office.yaml")
     parser.add_argument("--eval", action="store_true")
 
     args = parser.parse_args(sys.argv[1:])

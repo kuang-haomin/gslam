@@ -52,7 +52,7 @@ class TUMParser:
         self.n_img = len(self.color_paths)
 
     def parse_list(self, filepath, skiprows=0):
-        data = np.loadtxt(filepath, delimiter=" ", dtype=np.unicode_, skiprows=skiprows)
+        data = np.loadtxt(filepath, delimiter=" ", dtype=np.str_, skiprows=skiprows)
         return data
 
     def associate_frames(self, tstamp_image, tstamp_depth, tstamp_pose, max_dt=0.08):
@@ -268,8 +268,10 @@ class MonocularDataset(BaseDataset):
             depth_path = self.depth_paths[idx]
             depth = np.array(Image.open(depth_path)) / self.depth_scale
 
+        # print(f"Type of image: {type(image)}, shape: {getattr(image, 'shape', 'N/A')}")
+
         image = (
-            torch.from_numpy(image / 255.0)
+            torch.from_numpy((image / 255.0).astype(np.float32))
             .clamp(0.0, 1.0)
             .permute(2, 0, 1)
             .to(device=self.device, dtype=self.dtype)
